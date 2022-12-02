@@ -91,23 +91,6 @@ proof (induction  "{} :: (var \<times> type) set" "e" "\<tau>" rule:has_type.ind
     by (metis CApp1 CApp2 IsStep RApp StepOrValueE TypeUnitE type.distinct(1) value.simps)
 qed blast+
 
-lemma well_typed_free_in_context: "\<Gamma> \<turnstile> e : \<tau> \<Longrightarrow> x \<in> fvs e \<Longrightarrow> \<exists>\<tau>'. (x, \<tau>') \<in> \<Gamma>"
-  by (induction rule:has_type.induct, auto)
-
-lemma context_invariance:
-  "\<lbrakk> \<Gamma> \<turnstile> e : \<tau> ; \<Gamma> \<subseteq> \<Gamma>' \<rbrakk> \<Longrightarrow> \<Gamma>' \<turnstile> e : \<tau>"
-proof (induction arbitrary: \<Gamma>' rule:has_type.induct)
-  case (TypeFn x \<tau> \<Gamma> e \<tau>')
-  then show ?case
-    (* found by sledgehammer *)
-    by (meson has_type.TypeFn insert_mono)
-next
-  case (TypeLet \<Gamma> e1 \<tau>\<^sub>1 x e2 \<tau>\<^sub>2)
-  then show ?case
-    (* found by sledgehammer *)
-    by (meson has_type.TypeLet insert_mono)
-qed blast+
-
 lemma subst_preservation:
   "(insert (x, \<tau>') \<Gamma>) \<turnstile> e2 : \<tau> \<Longrightarrow> {} \<turnstile> e1 : \<tau>' \<Longrightarrow> \<Gamma> \<turnstile> subst x e1 e2 : \<tau>"
   sorry
